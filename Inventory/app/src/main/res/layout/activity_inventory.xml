@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimaryLight">
+    <TextView
+        android:id="@+id/invTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/grid_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/buttonborder2"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/grid_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="100dp"
+        android:background="@color/white"/>
+
+    <Button
+        android:id="@+id/DecreaseQtyBy5"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="-5"
+        android:background="@drawable/buttonborder"
+        android:onClick="onDecreaseQtyByFive"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/grid_recycler_view"
+        app:layout_constraintVertical_bias="0.508" />
+
+    <Button
+        android:id="@+id/DecreaseQtyBy1"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="-1"
+        android:background="@drawable/buttonborder"
+        android:onClick="onDecreaseQtyByOne"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/DecreaseQtyBy5"
+        app:layout_constraintTop_toBottomOf="@+id/grid_recycler_view"
+        app:layout_constraintVertical_bias="0.517" />
+
+    <Button
+        android:id="@+id/IncreaseQtyBy5"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="+5"
+        android:textColor="@color/white"
+        android:background="@drawable/buttonborder2"
+        android:onClick="onIncreaseQtyByFive"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/IncreaseQtyBy1"
+        app:layout_constraintTop_toBottomOf="@+id/grid_recycler_view" />
+
+    <Button
+        android:id="@+id/IncreaseQtyBy1"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="+1"
+        android:textColor="@color/white"
+        android:background="@drawable/buttonborder2"
+        android:onClick="onIncreaseQtyByOne"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/DecreaseQtyBy1"
+        app:layout_constraintTop_toBottomOf="@+id/grid_recycler_view"/>
+
+    <!-- FIXME add functionality for deleting item with confirmation box-->
+
+
+    <!-- FIXME add functionality for adding item-->
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/DeleteItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/colorSecondaryDark"
+        android:clickable="true"
+        android:onClick="onDeleteButtonClick"
+        app:fabCustomSize="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/AddItem"
+        app:layout_constraintTop_toBottomOf="@+id/grid_recycler_view"
+        app:srcCompat="@drawable/delete"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/AddItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabCustomSize="50dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:onClick="onAddItemClick"
+        android:backgroundTint="@color/colorSecondaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/grid_recycler_view"
+        app:srcCompat="@drawable/plus"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
