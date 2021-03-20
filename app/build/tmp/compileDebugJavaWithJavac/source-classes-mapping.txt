@@ -1,0 +1,20 @@
+com/cmelugin/inventory/AddItemActivity.java
+ com.cmelugin.inventory.AddItemActivity
+com/cmelugin/inventory/BuildConfig.java
+ com.cmelugin.inventory.BuildConfig
+com/cmelugin/inventory/InventoryActivity.java
+ com.cmelugin.inventory.InventoryActivity
+ com.cmelugin.inventory.InventoryActivity$1
+ com.cmelugin.inventory.InventoryActivity$2
+ com.cmelugin.inventory.InventoryActivity$RecyclerViewAdapter
+ com.cmelugin.inventory.InventoryActivity$ViewHolder
+com/cmelugin/inventory/InventoryItem.java
+ com.cmelugin.inventory.InventoryItem
+com/cmelugin/inventory/LoginValue.java
+ com.cmelugin.inventory.LoginValue
+com/cmelugin/inventory/LoginActivity.java
+ com.cmelugin.inventory.LoginActivity
+com/cmelugin/inventory/Database.java
+ com.cmelugin.inventory.Database
+ com.cmelugin.inventory.Database$InventoryTable
+ com.cmelugin.inventory.Database$LoginTable
