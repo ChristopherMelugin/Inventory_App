@@ -74,41 +74,13 @@ public class InventoryActivity extends AppCompatActivity {
     }
 
 
-    // Increase and decreasing quantities
-    public void onIncreaseQtyByOne(View view) {
-        mItemDb.updateQuantity(mInventoryItem.getId(), mInventoryItem.getQuantity(), 1);
-        int newQty = mInventoryItem.getQuantity() + 1;
-        mInventoryItem.setQuantity(newQty);
-        mAdapter.notifyItemChanged(mInventoryItem.getId());
-        onResume();
-    }
-
-    public void onIncreaseQtyByFive(View view) {
-        mItemDb.updateQuantity(mInventoryItem.getId(), mInventoryItem.getQuantity(), 5);
-        int newQty = mInventoryItem.getQuantity() + 5;
-        mInventoryItem.setQuantity(newQty);
-        mAdapter.notifyItemChanged(mInventoryItem.getId());
-        onResume();
-    }
-
-    public void onDecreaseQtyByOne(View view) {
-        if (mInventoryItem.getQuantity() >= 1) {
-            mItemDb.updateQuantity(mInventoryItem.getId(), mInventoryItem.getQuantity(), -1);
-            int newQty = mInventoryItem.getQuantity() - 1;
-            mInventoryItem.setQuantity(newQty);
-            mAdapter.notifyItemChanged(mInventoryItem.getId());
-            onResume();
-            checkForLow(mInventoryItem);
-        }
-        else {
-            Toast.makeText(this, "Can't have less than ZERO items!!!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void onDecreaseQtyByFive(View view) {
-        if (mInventoryItem.getQuantity() >= 5) {
-            mItemDb.updateQuantity(mInventoryItem.getId(), mInventoryItem.getQuantity(), -5);
-            int newQty = mInventoryItem.getQuantity() - 5;
+    // update quantities
+    public void onAnyUpdateQty(View view) {
+        int number;
+        number = Integer.parseInt(view.getTooltipText().toString());
+        if ((mInventoryItem.getQuantity()) + number >= 0) {
+            mItemDb.updateQuantity(mInventoryItem.getId(), mInventoryItem.getQuantity(), number);
+            int newQty = mInventoryItem.getQuantity() + number;
             mInventoryItem.setQuantity(newQty);
             mAdapter.notifyItemChanged(mInventoryItem.getId());
             onResume();
