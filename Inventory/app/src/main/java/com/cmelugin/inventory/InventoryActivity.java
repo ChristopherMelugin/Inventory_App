@@ -109,14 +109,14 @@ public class InventoryActivity extends AppCompatActivity {
 
 
 
-    // update quantities
+    // Update quantities
     public void onAnyUpdateQty(View view) {
-        int number;
-        number = Integer.parseInt(view.getTooltipText().toString());
+        int number = Integer.parseInt(view.getTooltipText().toString());
         if ((mInventoryItem.getQuantity()) + number >= 0) {
-            mItemDb.updateQuantity(mInventoryItem.getId(), mInventoryItem.getQuantity(), number);
             int newQty = mInventoryItem.getQuantity() + number;
+            mItemDb.updateQuantity(mInventoryItem.getId(), newQty);
             mInventoryItem.setQuantity(newQty);
+            // Refresh list
             mAdapter.notifyItemChanged(mInventoryItem.getId());
             onResume();
             checkForLow(mInventoryItem);
