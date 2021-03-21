@@ -137,6 +137,14 @@ public class Database extends SQLiteOpenHelper {
         db.update(InventoryTable.TABLE, newQuantity, InventoryTable.COL_ID + " = " + itemId, null);
     }
 
+    // Call to update the name of an item in the database
+    public void updateItemName(int itemId, String updatedName) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues newName = new ContentValues();
+        newName.put(InventoryTable.COL_NAME, updatedName);
+        db.update(InventoryTable.TABLE, newName, InventoryTable.COL_ID + " = " + itemId, null);
+    }
+
     // Call to delete an item in the database
     public void deleteItem(InventoryItem item) {
         SQLiteDatabase db = getWritableDatabase();

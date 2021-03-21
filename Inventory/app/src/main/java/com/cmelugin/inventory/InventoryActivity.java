@@ -101,8 +101,18 @@ public class InventoryActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                // FIXME define save button here
+                String name = popup_item_name.getText().toString();
+                String quantity = popup_item_qty.getText().toString();
+                if (!name.equals("")) {
+                    mItemDb.updateItemName(mInventoryItem.getId(), name);
+                }
+                if (!quantity.equals("")) {
+                    mItemDb.updateQuantity(mInventoryItem.getId(), Integer.parseInt(quantity));
+                }
                 dialog.dismiss();
+                mAdapter.notifyItemChanged(mInventoryItem.getId());
+                onResume();
+                checkForLow(mInventoryItem);
             }
         });
     }

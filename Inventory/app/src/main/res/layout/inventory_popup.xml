@@ -16,6 +16,7 @@
         android:gravity="center"
         android:text="Modify Item"
         android:textSize="24sp"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/grid_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
