@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,11 @@ public class InventoryActivity extends AppCompatActivity {
     private int mSelectedInventoryPosition = RecyclerView.NO_POSITION;
     private InventoryItem mInventoryItem;
 
+    // Popup declarations
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private EditText popup_item_name, popup_item_qty;
+    private Button save_mods;
 
 
     @Override
@@ -74,6 +81,34 @@ public class InventoryActivity extends AppCompatActivity {
     }
 
 
+
+    public void onItemLongClick(InventoryItem item) {
+        mInventoryItem = item;
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View inventoryPopupView = getLayoutInflater().inflate(R.layout.inventory_popup, null);
+        popup_item_name = (EditText) inventoryPopupView.findViewById(R.id.popup_item_name);
+        popup_item_qty = (EditText) inventoryPopupView.findViewById(R.id.popup_item_qty);
+        save_mods = (Button) inventoryPopupView.findViewById(R.id.popup_save);
+
+        popup_item_name.setText(item.getTitle());
+        popup_item_qty.setText(String.valueOf(item.getQuantity()));
+
+        dialogBuilder.setView(inventoryPopupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        save_mods.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                // FIXME define save button here
+                dialog.dismiss();
+            }
+        });
+    }
+
+
+
     // update quantities
     public void onAnyUpdateQty(View view) {
         int number;
@@ -90,7 +125,6 @@ public class InventoryActivity extends AppCompatActivity {
             Toast.makeText(this, "Can't have less than ZERO items!!!", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     // On click for new item. Launches AddItemActivity
     public void onAddItemClick(View view) {
@@ -170,13 +204,8 @@ public class InventoryActivity extends AppCompatActivity {
         notificationManager.notify(notifyInt, notification);
     }
 
-
-
-
-
-
     // Stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
 
         private InventoryItem mInventoryItem;
         private TextView mTextView;
@@ -184,6 +213,7 @@ public class InventoryActivity extends AppCompatActivity {
         public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.recycler_view_item, parent, false));
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
             mTextView = itemView.findViewById(R.id.cardTitle);
         }
 
@@ -208,6 +238,15 @@ public class InventoryActivity extends AppCompatActivity {
             mSelectedInventoryPosition = getAdapterPosition();
             mAdapter.notifyItemChanged(mSelectedInventoryPosition);
             onItemSelected(mInventoryItem);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            mAdapter.notifyItemChanged(mSelectedInventoryPosition);
+            mSelectedInventoryPosition = getAdapterPosition();
+            mAdapter.notifyItemChanged(mSelectedInventoryPosition);
+            onItemLongClick(mInventoryItem);
+            return true;
         }
     }
 

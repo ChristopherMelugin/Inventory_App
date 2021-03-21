@@ -129,7 +129,7 @@ public class Database extends SQLiteOpenHelper {
         db.insert(InventoryTable.TABLE, null, values);
     }
 
-    // Call to update the quanity in the database
+    // Call to update the quantity in the database
     public void updateQuantity(int itemId, int currentAmount, int updateModifier) {
         int newTotal = currentAmount + updateModifier;
         SQLiteDatabase db = getWritableDatabase();
