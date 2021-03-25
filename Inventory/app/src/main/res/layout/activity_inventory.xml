@@ -5,20 +5,44 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryLight">
+
     <TextView
         android:id="@+id/invTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_width="275dp"
+        android:layout_height="40dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/buttonborder2"
         android:fontFamily="monospace"
         android:gravity="center"
-        android:textSize="24sp"
         android:textColor="@color/white"
+        android:textSize="24sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/grid_recycler_view"
+        app:layout_constraintEnd_toStartOf="@+id/sortAbc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/sortAbc"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/buttonborder"
+        android:src="@drawable/abcsort"
+        app:layout_constraintBottom_toTopOf="@+id/grid_recycler_view"
+        app:layout_constraintEnd_toStartOf="@+id/sortQty"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/sortQty"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/buttonborder"
+        android:src="@drawable/qtysort"
         app:layout_constraintBottom_toTopOf="@+id/grid_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/buttonborder2"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/grid_recycler_view"
@@ -92,10 +116,6 @@
         app:layout_constraintStart_toEndOf="@+id/DecreaseQtyBy1"
         app:layout_constraintTop_toBottomOf="@+id/grid_recycler_view"/>
 
-    <!-- FIXME add functionality for deleting item with confirmation box-->
-
-
-    <!-- FIXME add functionality for adding item-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/DeleteItem"

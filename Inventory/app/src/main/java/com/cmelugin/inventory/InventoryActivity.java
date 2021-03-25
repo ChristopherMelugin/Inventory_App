@@ -35,12 +35,14 @@ public class InventoryActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private int mSelectedInventoryPosition = RecyclerView.NO_POSITION;
     private InventoryItem mInventoryItem;
+    private boolean sAbc, sQty;
 
     // Popup declarations
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
     private EditText popup_item_name, popup_item_qty;
     private Button save_mods;
+
 
 
     @Override
@@ -68,7 +70,8 @@ public class InventoryActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.grid_recycler_view);
 
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 4));
-        mAdapter = new RecyclerViewAdapter(loadInventory(mUsername));
+
+            mAdapter = new RecyclerViewAdapter(loadInventory(mUsername));
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -79,8 +82,6 @@ public class InventoryActivity extends AppCompatActivity {
     public void onItemSelected(InventoryItem item) {
         mInventoryItem = item;
     }
-
-
 
     public void onItemLongClick(InventoryItem item) {
         mInventoryItem = item;
