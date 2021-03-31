@@ -22,6 +22,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class InventoryActivity extends AppCompatActivity {
@@ -66,18 +68,54 @@ public class InventoryActivity extends AppCompatActivity {
     // Build the adapter. Also used to refresh inventory items.
     public void setupAdapter() {
         mItemDb = Database.getInstance(getApplicationContext());
-
         recyclerView = findViewById(R.id.grid_recycler_view);
-
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 4));
-
-            mAdapter = new RecyclerViewAdapter(loadInventory(mUsername));
+        mAdapter = new RecyclerViewAdapter(loadInventory(mUsername));
         recyclerView.setAdapter(mAdapter);
     }
 
+    // Loads inventory and sorts as necessary
     private List<InventoryItem> loadInventory(String username) {
-        return mItemDb.getInventoryItems(username);
+        List<InventoryItem> items = mItemDb.getInventoryItems(username);
+        if (sAbc == true) {
+            Collections.sort(items, new compareTitles());
+        }
+        else if(sQty == true) {
+            Collections.sort(items, new compareQty());
+        }
+        return items;
     }
+
+    // Title sort button function
+    public void sortAbc(View view) {
+        sAbc = !sAbc;
+        sQty = false;
+        onResume();
+    }
+
+    // Quantity sort button function
+    public void sortQty(View view) {
+        sAbc = false;
+        sQty = !sQty;
+        onResume();
+    }
+
+    // Title comparator
+    public static class compareTitles implements Comparator<InventoryItem> {
+        @Override
+        public int compare(InventoryItem item0, InventoryItem item1) {
+            return item0.getTitle().compareTo(item1.getTitle());
+        }
+    }
+
+    // Quantity comparator
+    public static class compareQty implements Comparator<InventoryItem> {
+        @Override
+        public int compare(InventoryItem item0, InventoryItem item1) {
+            return item1.getQuantity() - (item0.getQuantity());
+        }
+    }
+
 
     public void onItemSelected(InventoryItem item) {
         mInventoryItem = item;

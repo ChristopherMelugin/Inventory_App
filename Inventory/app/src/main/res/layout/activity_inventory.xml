@@ -29,6 +29,7 @@
         android:layout_margin="10dp"
         android:background="@drawable/buttonborder"
         android:src="@drawable/abcsort"
+        android:onClick="sortAbc"
         app:layout_constraintBottom_toTopOf="@+id/grid_recycler_view"
         app:layout_constraintEnd_toStartOf="@+id/sortQty"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,6 +41,7 @@
         android:layout_margin="10dp"
         android:background="@drawable/buttonborder"
         android:src="@drawable/qtysort"
+        android:onClick="sortQty"
         app:layout_constraintBottom_toTopOf="@+id/grid_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
