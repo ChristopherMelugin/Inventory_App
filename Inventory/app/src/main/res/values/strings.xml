@@ -10,12 +10,13 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <!-- Strings related to inventory -->
-    <!-- FIXME find a way to import username from database and insert into string below -->
     <string name="userInv">FIXME\'S Inventory</string>
     <string name="itemName">Add New Item</string>
+    <string name="tagName">Add New Tag</string>
     <string name="confirm_dialog_message">Are you sure you want to delete this item?</string>
     <string name="confirm_dialog_title">Delete Item</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="new_name">Item Name</string>
+    <string name="new_tag">Tag Name</string>
 </resources>
