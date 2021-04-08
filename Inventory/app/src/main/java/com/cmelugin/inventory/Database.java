@@ -44,7 +44,12 @@ public class Database extends SQLiteOpenHelper {
         private static final String TABLE = "users";
         private static final String COL_USERNAME = "username";
         private static final String COL_PASSWORD = "password";
+    }
 
+    private static final class TagTable {
+        private static final String TABLE = "tags";
+        private static final String TAG_ID = "_id";
+        private static final String TAG_NAME= "tag";
     }
 
     // Build tables
@@ -62,9 +67,11 @@ public class Database extends SQLiteOpenHelper {
                 + LoginTable.TABLE + " ("
                 + LoginTable.COL_USERNAME + " primary key, "
                 + LoginTable.COL_PASSWORD + ")");
-                /*+ "foreign key(" + LoginTable.COL_USERNAME
-                + ") references " + InventoryTable.TABLE + "("
-                + InventoryTable.COL_USERNAME + ") on delete cascade)");*/
+
+        db.execSQL("create table "
+                + TagTable.TABLE + " ("
+                + TagTable.TAG_ID + " integer primary key autoincrement, "
+                + TagTable.TAG_NAME + ")");
     }
 
     // Call to add username and password to database
@@ -111,6 +118,9 @@ public class Database extends SQLiteOpenHelper {
         cursor.close();
         return items;
     }
+
+    // Add a tag
+    // public int addTag(String tag) {}
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
