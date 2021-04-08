@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/new_tag"
+        android:title="New Tag" />
+
+    <item
+        android:id="@+id/sortAbc"
+        android:title="Sort by ABC" />
+
+    <item
+        android:id="@+id/sortQty"
+        android:title="Sort by QTY" />
+
+</menu>

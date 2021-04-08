@@ -6,8 +6,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryLight">
 
+    <Toolbar
+        android:id="@+id/invToolbar"
+        android:layout_width="408dp"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary"
+        android:fontFamily="monospace"
+        android:minHeight="?attr/actionBarSize"
+        android:textColor="@color/white"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintBottom_toTopOf="@+id/grid_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!--
     <TextView
-        android:id="@+id/invTitle"
         android:layout_width="275dp"
         android:layout_height="40dp"
         android:layout_margin="15dp"
@@ -21,30 +36,7 @@
         app:layout_constraintEnd_toStartOf="@+id/sortAbc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/sortAbc"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/buttonborder"
-        android:src="@drawable/abcsort"
-        android:onClick="sortAbc"
-        app:layout_constraintBottom_toTopOf="@+id/grid_recycler_view"
-        app:layout_constraintEnd_toStartOf="@+id/sortQty"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/sortQty"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/buttonborder"
-        android:src="@drawable/qtysort"
-        android:onClick="sortQty"
-        app:layout_constraintBottom_toTopOf="@+id/grid_recycler_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/grid_recycler_view"
@@ -146,5 +138,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/grid_recycler_view"
         app:srcCompat="@drawable/plus"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,12 +15,16 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -45,6 +49,7 @@ public class InventoryActivity extends AppCompatActivity {
     private EditText popup_item_name, popup_item_qty;
     private Button save_mods;
 
+    public Menu menu;
 
 
     @Override
@@ -53,10 +58,13 @@ public class InventoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_inventory);
         Intent intent = getIntent();
         mUsername = intent.getStringExtra(EXTRA_USERNAME);
-        TextView screenTitle = (TextView) findViewById(R.id.invTitle);
-        screenTitle.setText(mUsername + "'s Inventory");
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.invToolbar);
+        setActionBar(mToolbar);
+        onCreateOptionsMenu(menu);
         setupAdapter();
     }
+
+
 
     @Override
     protected void onResume() {
@@ -86,15 +94,48 @@ public class InventoryActivity extends AppCompatActivity {
         return items;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.invToolbar);
+        mToolbar.inflateMenu(R.menu.main_menu);
+        mToolbar.setOnMenuItemClickListener(
+                new Toolbar.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        return onOptionsItemSelected(item);
+                    }
+                });
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.new_tag:
+                //onAddItemClick();
+                Toast.makeText(this, "new_tag selected", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.sortAbc:
+                sortAbc();
+                return true;
+            case R.id.sortQty:
+                sortQty();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     // Title sort button function
-    public void sortAbc(View view) {
+    public void sortAbc() {
         sAbc = !sAbc;
         sQty = false;
         onResume();
     }
 
     // Quantity sort button function
-    public void sortQty(View view) {
+    public void sortQty() {
         sAbc = false;
         sQty = !sQty;
         onResume();
