@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,11 +59,11 @@ public class InventoryActivity extends AppCompatActivity {
         mUsername = intent.getStringExtra(EXTRA_USERNAME);
         Toolbar mToolbar = (Toolbar) findViewById(R.id.invToolbar);
         setActionBar(mToolbar);
+        String title = mUsername + "'s Inventory";
+        getActionBar().setTitle(title);
         onCreateOptionsMenu(menu);
         setupAdapter();
     }
-
-
 
     @Override
     protected void onResume() {

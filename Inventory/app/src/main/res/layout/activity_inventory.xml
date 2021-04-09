@@ -8,41 +8,21 @@
 
     <Toolbar
         android:id="@+id/invToolbar"
-        android:layout_width="408dp"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimary"
-        android:fontFamily="monospace"
-        android:minHeight="?attr/actionBarSize"
-        android:textColor="@color/white"
-        android:theme="?attr/actionBarTheme"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/colorPrimaryLight"
         app:layout_constraintBottom_toTopOf="@+id/grid_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
-
-    <!--
-    <TextView
-        android:layout_width="275dp"
-        android:layout_height="40dp"
-        android:layout_margin="15dp"
-        android:background="@drawable/buttonborder2"
-        android:fontFamily="monospace"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toTopOf="@+id/grid_recycler_view"
-        app:layout_constraintEnd_toStartOf="@+id/sortAbc"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/grid_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="55dp"
         android:layout_marginBottom="100dp"
         android:background="@color/white"/>
 
