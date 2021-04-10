@@ -112,8 +112,9 @@ public class InventoryActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.new_tag:
-                //onAddItemClick();
-                Toast.makeText(this, "new_tag selected", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, AddTagActivity.class);
+                startActivity(intent);
+                //Toast.makeText(this, "new_tag selected", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.sortAbc:
                 sortAbc();
@@ -195,8 +196,6 @@ public class InventoryActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     // Update quantities
     public void onAnyUpdateQty(View view) {
@@ -339,7 +338,7 @@ public class InventoryActivity extends AppCompatActivity {
         }
     }
 
-
+    
     public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         private List<InventoryItem> mInventoryItems;

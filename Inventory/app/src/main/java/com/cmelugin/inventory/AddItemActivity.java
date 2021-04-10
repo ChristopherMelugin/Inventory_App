@@ -80,7 +80,6 @@ public class AddItemActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_SMS: {
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // FIXME add functionality to notify user when item is low
                 }
             }
         }
