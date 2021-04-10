@@ -1,6 +1,5 @@
 package com.cmelugin.inventory;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -8,7 +7,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.cmelugin.inventory.InventoryActivity.EXTRA_USERNAME;
 
 public class AddTagActivity extends AppCompatActivity {
 

@@ -1,13 +1,14 @@
 package com.cmelugin.inventory;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +37,13 @@ public class AddItemActivity extends AppCompatActivity {
     mUsername = intent.getStringExtra(EXTRA_USERNAME);
 
     mItemDb = Database.getInstance(getApplicationContext());
+
+    // Define and build spinner for tags
+    Spinner spinner = (Spinner) findViewById(R.id.tag_list);
+    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+            R.array.planets_array, android.R.layout.simple_spinner_item);
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    spinner.setAdapter(adapter);
     }
 
     // Sends the values to the database for insertion

@@ -19,4 +19,14 @@
     <string name="cancel">Cancel</string>
     <string name="new_name">Item Name</string>
     <string name="new_tag">Tag Name</string>
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
 </resources>

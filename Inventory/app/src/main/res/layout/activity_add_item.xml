@@ -48,24 +48,44 @@
     <CheckBox
         android:id="@+id/notify_low_qty"
         android:layout_width="wrap_content"
-        android:layout_height="31dp"
+        android:layout_height="32dp"
         android:onClick="checkPermissions"
         android:text="Notify When Low "
         app:layout_constraintBottom_toBottomOf="@+id/new_item_qty"
         app:layout_constraintStart_toEndOf="@+id/new_item_qty"
         app:layout_constraintTop_toTopOf="@+id/new_item_qty" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="Pick a tag?"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_item_qty" />
+
+    <Spinner
+        android:id="@+id/tag_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:hint="Add a tag"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+
     <Button
         android:id="@+id/finish_add_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
         android:text="Add to Inventory"
         android:onClick="addItemToDb"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_item_qty" />
-
-
+        app:layout_constraintTop_toBottomOf="@+id/tag_list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

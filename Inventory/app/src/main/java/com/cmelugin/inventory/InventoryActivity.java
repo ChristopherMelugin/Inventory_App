@@ -19,8 +19,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -170,6 +172,14 @@ public class InventoryActivity extends AppCompatActivity {
         popup_item_qty = (EditText) inventoryPopupView.findViewById(R.id.popup_item_qty);
         save_mods = (Button) inventoryPopupView.findViewById(R.id.popup_save);
 
+        // Define and build spinner for tags
+        Spinner spinner = (Spinner) inventoryPopupView.findViewById(R.id.tag_list);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.planets_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        // Set visible fields to the selected items relevant properties
         popup_item_name.setText(item.getTitle());
         popup_item_qty.setText(String.valueOf(item.getQuantity()));
 
