@@ -52,6 +52,12 @@ public class Database extends SQLiteOpenHelper {
         private static final String TAG_NAME= "tag";
     }
 
+    private static final class ItemTagMappingTable {
+        private static final String TABLE = "map";
+        private static final String ITEM_REFERENCE = "item";
+        private static final String TAG_REFERENCE = "tag";
+    }
+
     // Build tables
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -72,6 +78,11 @@ public class Database extends SQLiteOpenHelper {
                 + TagTable.TABLE + " ("
                 + TagTable.TAG_ID + " integer primary key autoincrement, "
                 + TagTable.TAG_NAME + ")");
+
+        db.execSQL("create table "
+                + ItemTagMappingTable.TABLE + " ("
+                + ItemTagMappingTable.ITEM_REFERENCE + " integer, "
+                + ItemTagMappingTable.TAG_REFERENCE + " integer )");
     }
 
     // Call to add username and password to database
@@ -119,13 +130,18 @@ public class Database extends SQLiteOpenHelper {
         return items;
     }
 
-    // Add a tag
-    // public int addTag(String tag) {}
-
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists " + InventoryTable.TABLE);
         onCreate(db);
+    }
+
+    // Call when adding a new tag in the add tag activity
+    public void addTag(String tag) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TagTable.TAG_NAME, tag);
+        db.insert(TagTable.TABLE, null, values);
     }
 
     // call when all fields are full in the add item activity
