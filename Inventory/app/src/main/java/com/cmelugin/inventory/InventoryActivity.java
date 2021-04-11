@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -115,8 +116,8 @@ public class InventoryActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.new_tag:
                 Intent intent = new Intent(this, AddTagActivity.class);
+                intent.putExtra(InventoryActivity.EXTRA_USERNAME, mUsername);
                 startActivity(intent);
-                //Toast.makeText(this, "new_tag selected", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.sortAbc:
                 sortAbc();
@@ -166,7 +167,7 @@ public class InventoryActivity extends AppCompatActivity {
 
     public void onItemLongClick(InventoryItem item) {
         mInventoryItem = item;
-        List<Tag> tags = mDb.getTags();
+        List<Tag> tags = mDb.getTags(mUsername);
         dialogBuilder = new AlertDialog.Builder(this);
         final View inventoryPopupView = getLayoutInflater().inflate(R.layout.inventory_popup, null);
         popup_item_name = (EditText) inventoryPopupView.findViewById(R.id.popup_item_name);
@@ -177,6 +178,17 @@ public class InventoryActivity extends AppCompatActivity {
         Spinner spinner = (Spinner) inventoryPopupView.findViewById(R.id.tag_list);
         ArrayAdapter<Tag> adapter = new ArrayAdapter<Tag>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tags);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Behavior for when an item is clicked in the spinner
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            // For selecting options in the Spinner
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                parent.getItemAtPosition(pos);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
         spinner.setAdapter(adapter);
 
         // Set visible fields to the selected items relevant properties

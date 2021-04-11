@@ -11,7 +11,7 @@ import android.widget.Toast;
 public class LoginActivity extends AppCompatActivity {
 
     private LoginValue mLogin = new LoginValue();
-    private Database mLoginDb;
+    private Database mDb;
     private EditText mUser;
     private EditText mPass;
 
@@ -19,7 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mLoginDb = Database.getInstance(getApplicationContext());
+        mDb = Database.getInstance(getApplicationContext());
 
     }
 
@@ -31,10 +31,15 @@ public class LoginActivity extends AppCompatActivity {
         if ((!mUser.getText().toString().equals("")) && (!mPass.getText().toString().equals(""))) {
             mLogin.setUsername(this.mUser.getText().toString());
             mLogin.setPassword(this.mPass.getText().toString());
-            success = mLoginDb.addUser(mLogin);
+            success = mDb.addUser(mLogin);
             if (success == 0) {
+                String mUsername = mUser.getText().toString();
+                Tag tag = new Tag();
+                tag.setTag("No Tag");
+                tag.setUsername(mUsername);
+                mDb.addTag(tag);
                 Intent intent = new Intent(this, InventoryActivity.class);
-                intent.putExtra(InventoryActivity.EXTRA_USERNAME, mUser.getText().toString());
+                intent.putExtra(InventoryActivity.EXTRA_USERNAME, mUsername);
                 startActivity(intent);
             }
         }
@@ -64,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         LoginValue mSignIn = new LoginValue();
         mSignIn.setUsername(this.mUser.getText().toString());
         mSignIn.setPassword(this.mPass.getText().toString());
-        boolean authentic = mLoginDb.checkCredentials(mSignIn);
+        boolean authentic = mDb.checkCredentials(mSignIn);
 
         if (authentic) {
             Toast.makeText(this, "Welcome", Toast.LENGTH_LONG).show();

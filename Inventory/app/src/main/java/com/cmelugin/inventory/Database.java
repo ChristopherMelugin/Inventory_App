@@ -49,7 +49,8 @@ public class Database extends SQLiteOpenHelper {
     private static final class TagTable {
         private static final String TABLE = "tags";
         private static final String TAG_ID = "_id";
-        private static final String TAG_NAME= "tag";
+        private static final String TAG_NAME = "tag";
+        private static final String TAG_USERNAME = "username";
     }
 
     private static final class ItemTagMappingTable {
@@ -77,12 +78,14 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL("create table "
                 + TagTable.TABLE + " ("
                 + TagTable.TAG_ID + " integer primary key autoincrement, "
-                + TagTable.TAG_NAME + ")");
+                + TagTable.TAG_NAME + ", "
+                + TagTable.TAG_USERNAME + ")");
 
         db.execSQL("create table "
                 + ItemTagMappingTable.TABLE + " ("
                 + ItemTagMappingTable.ITEM_REFERENCE + " integer, "
                 + ItemTagMappingTable.TAG_REFERENCE + " integer )");
+
     }
 
     // Call to add username and password to database
@@ -131,17 +134,18 @@ public class Database extends SQLiteOpenHelper {
     }
 
     // Reads tag data from database and inserts it into an array list
-    public List<Tag> getTags() {
+    public List<Tag> getTags(String username) {
         List<Tag> tags = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String sql = "select * from " + TagTable.TABLE;
-        Cursor cursor = db.rawQuery(sql, null);
+        String sql = "select * from " + TagTable.TABLE+ " where " + TagTable.TAG_USERNAME + " = ?";
+        Cursor cursor = db.rawQuery(sql, new String[] { username });
 
         if(cursor.moveToFirst()) {
             do {
                 Tag tag = new Tag();
                 tag.setId(cursor.getInt(0));
                 tag.setTag(cursor.getString(1));
+                tag.setUsername(cursor.getString(2));
                 tags.add(tag);
             } while (cursor.moveToNext());
         }
@@ -160,6 +164,7 @@ public class Database extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TagTable.TAG_NAME, tag.getTag());
+        values.put(TagTable.TAG_USERNAME, tag.getUsername());
         db.insert(TagTable.TABLE, null, values);
     }
 

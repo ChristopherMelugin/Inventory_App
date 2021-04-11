@@ -1,31 +1,29 @@
 package com.cmelugin.inventory;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.cmelugin.inventory.InventoryActivity.EXTRA_USERNAME;
 
-public class AddItemActivity extends AppCompatActivity {
+public class AddItemActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
     private final int REQUEST_SMS = 0;
     private EditText mTitle;
     private EditText mQuantity;
     private CheckBox mNotify;
     private Database mDb;
-    private Tag tags = new Tag();
     private String mUsername;
     private InventoryItem newItem = new InventoryItem();
 
@@ -40,14 +38,24 @@ public class AddItemActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mUsername = intent.getStringExtra(EXTRA_USERNAME);
         mDb = Database.getInstance(getApplicationContext());
-        List<Tag> tags = mDb.getTags();
+        List<Tag> tags = mDb.getTags(mUsername);
 
         // Define and build spinner for tags
         Spinner spinner = (Spinner) findViewById(R.id.tag_list);
         ArrayAdapter<Tag> adapter = new ArrayAdapter<Tag>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tags);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setOnItemSelectedListener(this);
         spinner.setAdapter(adapter);
     }
+
+    // For selecting options in the Spinner
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        parent.getItemAtPosition(pos);
+    }
+
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
+
 
     // Sends the values to the database for insertion
     public void addItemToDb(View view) {

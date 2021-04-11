@@ -4,6 +4,7 @@ public class Tag {
 
     private int mId;
     private String mTag;
+    private String mUsername;
 
 
     // public getter methods
@@ -15,6 +16,10 @@ public class Tag {
         return mTag;
     }
 
+    public String getUsername() {
+        return mUsername;
+    }
+
 
     // public setter methods
     public void setId(int id) {
@@ -23,6 +28,10 @@ public class Tag {
 
     public void setTag(String tag) {
         mTag = tag;
+    }
+
+    public void setUsername(String username) {
+        mUsername = username;
     }
 
 
