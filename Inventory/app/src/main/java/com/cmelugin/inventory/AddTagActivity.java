@@ -11,20 +11,22 @@ import androidx.appcompat.app.AppCompatActivity;
 public class AddTagActivity extends AppCompatActivity {
 
     private EditText mTag;
-    private Database mItemDb;
+    private Database mTagDb;
+    private Tag tag = new Tag();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tag);
         mTag = findViewById(R.id.new_tag_name);
-        mItemDb = Database.getInstance(getApplicationContext());
+        mTagDb = Database.getInstance(getApplicationContext());
     }
 
     // Sends the values to the database for insertion
     public void addTagToDb(View view) {
         if ((!this.mTag.getText().toString().equals(""))) {
-            mItemDb.addTag(mTag.getText().toString());
+            tag.setTag(mTag.getText().toString());
+            mTagDb.addTag(tag);
             finish();
         }
         else {

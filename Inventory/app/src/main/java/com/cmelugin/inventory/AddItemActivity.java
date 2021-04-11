@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.cmelugin.inventory.InventoryActivity.EXTRA_USERNAME;
 
 public class AddItemActivity extends AppCompatActivity {
@@ -21,29 +24,29 @@ public class AddItemActivity extends AppCompatActivity {
     private EditText mTitle;
     private EditText mQuantity;
     private CheckBox mNotify;
-    private Database mItemDb;
+    private Database mDb;
+    private Tag tags = new Tag();
     private String mUsername;
     private InventoryItem newItem = new InventoryItem();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_add_item);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_item);
 
-    mTitle = findViewById(R.id.new_item_name);
-    mQuantity = findViewById(R.id.new_item_qty);
-    mNotify = findViewById(R.id.notify_low_qty);
-    Intent intent = getIntent();
-    mUsername = intent.getStringExtra(EXTRA_USERNAME);
+        mTitle = findViewById(R.id.new_item_name);
+        mQuantity = findViewById(R.id.new_item_qty);
+        mNotify = findViewById(R.id.notify_low_qty);
+        Intent intent = getIntent();
+        mUsername = intent.getStringExtra(EXTRA_USERNAME);
+        mDb = Database.getInstance(getApplicationContext());
+        List<Tag> tags = mDb.getTags();
 
-    mItemDb = Database.getInstance(getApplicationContext());
-
-    // Define and build spinner for tags
-    Spinner spinner = (Spinner) findViewById(R.id.tag_list);
-    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-            R.array.planets_array, android.R.layout.simple_spinner_item);
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    spinner.setAdapter(adapter);
+        // Define and build spinner for tags
+        Spinner spinner = (Spinner) findViewById(R.id.tag_list);
+        ArrayAdapter<Tag> adapter = new ArrayAdapter<Tag>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tags);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
     // Sends the values to the database for insertion
@@ -58,7 +61,7 @@ public class AddItemActivity extends AppCompatActivity {
             else {
                 newItem.setNotifyOnLow(0);
             }
-            mItemDb.addItem(newItem);
+            mDb.addItem(newItem);
             finish();
         }
         else {

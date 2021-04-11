@@ -37,7 +37,7 @@ public class InventoryActivity extends AppCompatActivity {
     public static final String EXTRA_USERNAME = "com.cmelugin.inventory.loginvalue";
     public static final String CHANNEL_ID = "channel_low_stock";
     private RecyclerViewAdapter mAdapter;
-    private Database mItemDb;
+    private Database mDb;
     private String mUsername;
     private RecyclerView recyclerView;
     private int mSelectedInventoryPosition = RecyclerView.NO_POSITION;
@@ -76,7 +76,7 @@ public class InventoryActivity extends AppCompatActivity {
 
     // Build the adapter. Also used to refresh inventory items.
     public void setupAdapter() {
-        mItemDb = Database.getInstance(getApplicationContext());
+        mDb = Database.getInstance(getApplicationContext());
         recyclerView = findViewById(R.id.grid_recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 4));
         mAdapter = new RecyclerViewAdapter(loadInventory(mUsername));
@@ -85,7 +85,7 @@ public class InventoryActivity extends AppCompatActivity {
 
     // Loads inventory and sorts as necessary
     private List<InventoryItem> loadInventory(String username) {
-        List<InventoryItem> items = mItemDb.getInventoryItems(username);
+        List<InventoryItem> items = mDb.getInventoryItems(username);
         if (sAbc == true) {
             Collections.sort(items, new compareTitles());
         }
@@ -166,6 +166,7 @@ public class InventoryActivity extends AppCompatActivity {
 
     public void onItemLongClick(InventoryItem item) {
         mInventoryItem = item;
+        List<Tag> tags = mDb.getTags();
         dialogBuilder = new AlertDialog.Builder(this);
         final View inventoryPopupView = getLayoutInflater().inflate(R.layout.inventory_popup, null);
         popup_item_name = (EditText) inventoryPopupView.findViewById(R.id.popup_item_name);
@@ -174,8 +175,7 @@ public class InventoryActivity extends AppCompatActivity {
 
         // Define and build spinner for tags
         Spinner spinner = (Spinner) inventoryPopupView.findViewById(R.id.tag_list);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.planets_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<Tag> adapter = new ArrayAdapter<Tag>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tags);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -194,10 +194,10 @@ public class InventoryActivity extends AppCompatActivity {
                 String name = popup_item_name.getText().toString();
                 String quantity = popup_item_qty.getText().toString();
                 if (!name.equals("")) {
-                    mItemDb.updateItemName(mInventoryItem.getId(), name);
+                    mDb.updateItemName(mInventoryItem.getId(), name);
                 }
                 if (!quantity.equals("")) {
-                    mItemDb.updateQuantity(mInventoryItem.getId(), Integer.parseInt(quantity));
+                    mDb.updateQuantity(mInventoryItem.getId(), Integer.parseInt(quantity));
                 }
                 dialog.dismiss();
                 mAdapter.notifyItemChanged(mInventoryItem.getId());
@@ -212,7 +212,7 @@ public class InventoryActivity extends AppCompatActivity {
         int number = Integer.parseInt(view.getTooltipText().toString());
         if ((mInventoryItem.getQuantity()) + number >= 0) {
             int newQty = mInventoryItem.getQuantity() + number;
-            mItemDb.updateQuantity(mInventoryItem.getId(), newQty);
+            mDb.updateQuantity(mInventoryItem.getId(), newQty);
             mInventoryItem.setQuantity(newQty);
             // Refresh list
             mAdapter.notifyItemChanged(mInventoryItem.getId());
@@ -243,7 +243,7 @@ public class InventoryActivity extends AppCompatActivity {
                     .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             // Confirm
-                            mItemDb.deleteItem(mInventoryItem);
+                            mDb.deleteItem(mInventoryItem);
                             mAdapter.removeItem(mInventoryItem);
                         }
                     })

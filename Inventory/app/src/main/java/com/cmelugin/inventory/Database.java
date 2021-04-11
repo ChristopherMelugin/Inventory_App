@@ -106,7 +106,7 @@ public class Database extends SQLiteOpenHelper {
         }
     }
 
-    // Reads data from database and inserts it into an array list
+    // Reads item data from database and inserts it into an array list
     public List<InventoryItem> getInventoryItems(String username) {
         List<InventoryItem> items = new ArrayList<>();
 
@@ -130,6 +130,25 @@ public class Database extends SQLiteOpenHelper {
         return items;
     }
 
+    // Reads tag data from database and inserts it into an array list
+    public List<Tag> getTags() {
+        List<Tag> tags = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "select * from " + TagTable.TABLE;
+        Cursor cursor = db.rawQuery(sql, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                Tag tag = new Tag();
+                tag.setId(cursor.getInt(0));
+                tag.setTag(cursor.getString(1));
+                tags.add(tag);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return tags;
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists " + InventoryTable.TABLE);
@@ -137,10 +156,10 @@ public class Database extends SQLiteOpenHelper {
     }
 
     // Call when adding a new tag in the add tag activity
-    public void addTag(String tag) {
+    public void addTag(Tag tag) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(TagTable.TAG_NAME, tag);
+        values.put(TagTable.TAG_NAME, tag.getTag());
         db.insert(TagTable.TABLE, null, values);
     }
 
