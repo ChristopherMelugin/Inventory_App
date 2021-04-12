@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Database extends SQLiteOpenHelper {
@@ -93,7 +94,9 @@ public class Database extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         // Check and see if username exists
-        String sql = "select * from " + LoginTable.TABLE + " where " + LoginTable.COL_USERNAME + " = ?";
+        String sql = "select * from "
+                + LoginTable.TABLE + " where "
+                + LoginTable.COL_USERNAME + " = ?";
         Cursor cursor = (db.rawQuery(sql, new String[] { user.getUsername() }));
 
         if  (cursor.getCount() == 0) {
@@ -115,7 +118,9 @@ public class Database extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String sql = "select * from " + InventoryTable.TABLE + " where " + InventoryTable.COL_USERNAME + " = ?";
+        String sql = "select * from "
+                + InventoryTable.TABLE + " where "
+                + InventoryTable.COL_USERNAME + " = ?";
         Cursor cursor = db.rawQuery(sql, new String[] { username });
 
         if(cursor.moveToFirst()) {
@@ -137,7 +142,9 @@ public class Database extends SQLiteOpenHelper {
     public List<Tag> getTags(String username) {
         List<Tag> tags = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String sql = "select * from " + TagTable.TABLE+ " where " + TagTable.TAG_USERNAME + " = ?";
+        String sql = "select * from "
+                + TagTable.TABLE + " where "
+                + TagTable.TAG_USERNAME + " = ?";
         Cursor cursor = db.rawQuery(sql, new String[] { username });
 
         if(cursor.moveToFirst()) {
@@ -151,6 +158,24 @@ public class Database extends SQLiteOpenHelper {
         }
         cursor.close();
         return tags;
+    }
+
+    // gets the id of the selected tag in the add item activity or the inventory popup
+    public int getTagForSelections(String username, String tagName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "select _id from "
+                + TagTable.TABLE+ " where "
+                + TagTable.TAG_USERNAME + " = ?"
+                + " and "
+                + TagTable.TAG_NAME + " = ?";
+        Cursor cursor = db.rawQuery(sql, new String[] { username, tagName });
+        if(cursor.moveToFirst()) {
+            return cursor.getInt(0);
+        }
+        else {
+            // Return default "No Tag" which is _id = 0.
+            return 0;
+        }
     }
 
     @Override
@@ -168,15 +193,16 @@ public class Database extends SQLiteOpenHelper {
         db.insert(TagTable.TABLE, null, values);
     }
 
-    // call when all fields are full in the add item activity
-    public void addItem(InventoryItem item) {
+    // call when all fields are full in the add item activity.
+    // Returns row id of newly inserted item
+    public long addItem(InventoryItem item) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(InventoryTable.COL_NAME, item.getTitle());
         values.put(InventoryTable.COL_QTY, item.getQuantity());
         values.put(InventoryTable.COL_LOW_NOTIFY, item.getNotifyOnLow());
         values.put(InventoryTable.COL_USERNAME, item.getUsername());
-        db.insert(InventoryTable.TABLE, null, values);
+        return db.insert(InventoryTable.TABLE, null, values);
     }
 
     // Call to update the quantity in the database
