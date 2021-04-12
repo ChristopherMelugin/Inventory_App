@@ -84,7 +84,7 @@ public class Database extends SQLiteOpenHelper {
 
         db.execSQL("create table "
                 + ItemTagMappingTable.TABLE + " ("
-                + ItemTagMappingTable.ITEM_REFERENCE + " integer, "
+                + ItemTagMappingTable.ITEM_REFERENCE + " integer unique, "
                 + ItemTagMappingTable.TAG_REFERENCE + " integer )");
 
     }
@@ -160,8 +160,8 @@ public class Database extends SQLiteOpenHelper {
         return tags;
     }
 
-    // gets the id of the selected tag in the add item activity or the inventory popup
-    public int getTagForSelections(String username, String tagName) {
+    // Gets the id of the selected tag in the add item activity or the inventory popup
+    public long getTagForSelections(String username, String tagName) {
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "select _id from "
                 + TagTable.TABLE+ " where "
@@ -170,12 +170,21 @@ public class Database extends SQLiteOpenHelper {
                 + TagTable.TAG_NAME + " = ?";
         Cursor cursor = db.rawQuery(sql, new String[] { username, tagName });
         if(cursor.moveToFirst()) {
-            return cursor.getInt(0);
+            return cursor.getLong(0);
         }
         else {
             // Return default "No Tag" which is _id = 0.
             return 0;
         }
+    }
+
+    // Adds or updates a mapping into the mapping table to connect an item with a tag
+    public void newMap(long itemId, long tagId) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ItemTagMappingTable.ITEM_REFERENCE, itemId);
+        values.put(ItemTagMappingTable.TAG_REFERENCE, tagId);
+        db.insertWithOnConflict(ItemTagMappingTable.TABLE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     @Override

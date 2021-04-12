@@ -25,6 +25,7 @@ public class AddItemActivity extends Activity implements AdapterView.OnItemSelec
     private CheckBox mNotify;
     private Database mDb;
     private String mUsername;
+    private long tagId;
     private InventoryItem newItem = new InventoryItem();
 
     @Override
@@ -50,7 +51,7 @@ public class AddItemActivity extends Activity implements AdapterView.OnItemSelec
 
     // For selecting options in the Spinner
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        parent.getItemAtPosition(pos);
+        tagId = mDb.getTagForSelections(mUsername, parent.getItemAtPosition(pos).toString());
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
@@ -69,7 +70,8 @@ public class AddItemActivity extends Activity implements AdapterView.OnItemSelec
             else {
                 newItem.setNotifyOnLow(0);
             }
-            mDb.addItem(newItem);
+            long itemId = mDb.addItem(newItem);
+            mDb.newMap(itemId, tagId);
             finish();
         }
         else {

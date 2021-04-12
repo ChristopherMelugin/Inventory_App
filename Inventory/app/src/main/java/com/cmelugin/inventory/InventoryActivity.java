@@ -52,6 +52,7 @@ public class InventoryActivity extends AppCompatActivity {
     private Button save_mods;
 
     public Menu menu;
+    private long tagId;
 
 
     @Override
@@ -183,7 +184,7 @@ public class InventoryActivity extends AppCompatActivity {
             @Override
             // For selecting options in the Spinner
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                parent.getItemAtPosition(pos);
+                tagId = mDb.getTagForSelections(mUsername, parent.getItemAtPosition(pos).toString());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -211,6 +212,7 @@ public class InventoryActivity extends AppCompatActivity {
                 if (!quantity.equals("")) {
                     mDb.updateQuantity(mInventoryItem.getId(), Integer.parseInt(quantity));
                 }
+                mDb.newMap(mInventoryItem.getId(), tagId);
                 dialog.dismiss();
                 mAdapter.notifyItemChanged(mInventoryItem.getId());
                 onResume();
