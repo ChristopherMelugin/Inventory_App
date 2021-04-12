@@ -40,4 +40,22 @@ public class Tag {
     public String toString() {
         return mTag;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) {
+            return true;
+        }
+        if(obj == null || obj.getClass()!= this.getClass()) {
+            return false;
+        }
+        Tag tag = (Tag) obj;
+
+        return (tag.mTag.equals(this.mTag) && tag.mId == this.mId);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.mId;
+    }
 }

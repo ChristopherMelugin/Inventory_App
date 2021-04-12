@@ -178,6 +178,24 @@ public class Database extends SQLiteOpenHelper {
         }
     }
 
+    // Gets the tag associated with the item selected for modification
+    public Tag getTagForPopup(String username, String tagId) {
+        Tag tag = new Tag();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "select * from "
+                + TagTable.TABLE+ " where "
+                + TagTable.TAG_USERNAME + " = ?"
+                + " and "
+                + TagTable.TAG_ID + " = ?";
+        Cursor cursor = db.rawQuery(sql, new String[] { username, tagId });
+        if(cursor.moveToFirst()) {
+            tag.setId(cursor.getInt(0));
+            tag.setTag(cursor.getString(1));
+            tag.setUsername(cursor.getString(2));
+        }
+        return tag;
+    }
+
     // Adds or updates a mapping into the mapping table to connect an item with a tag
     public void newMap(long itemId, long tagId) {
         SQLiteDatabase db = getWritableDatabase();
@@ -185,6 +203,21 @@ public class Database extends SQLiteOpenHelper {
         values.put(ItemTagMappingTable.ITEM_REFERENCE, itemId);
         values.put(ItemTagMappingTable.TAG_REFERENCE, tagId);
         db.insertWithOnConflict(ItemTagMappingTable.TABLE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+    }
+
+    // Returns the tag id associated with the item selected for modification
+    public int getMapTag(String itemId) {
+        SQLiteDatabase db = getReadableDatabase();
+        String sql = "select tag from "
+                + ItemTagMappingTable.TABLE + " where "
+                + ItemTagMappingTable.ITEM_REFERENCE + " = ?";
+        Cursor cursor = db.rawQuery(sql, new String[] { itemId });
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(0);
+        }
+        else {
+            return 0;
+        }
     }
 
     @Override

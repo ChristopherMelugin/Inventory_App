@@ -175,10 +175,19 @@ public class InventoryActivity extends AppCompatActivity {
         popup_item_qty = (EditText) inventoryPopupView.findViewById(R.id.popup_item_qty);
         save_mods = (Button) inventoryPopupView.findViewById(R.id.popup_save);
 
+        // Get the tag that is mapped to the item
+        int mappedTag = mDb.getMapTag(String.valueOf(item.getId()));
+        Tag retrievedTag = mDb.getTagForPopup(mUsername, String.valueOf(mappedTag));
+
         // Define and build spinner for tags
         Spinner spinner = (Spinner) inventoryPopupView.findViewById(R.id.tag_list);
-        ArrayAdapter<Tag> adapter = new ArrayAdapter<Tag>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tags);
+        ArrayAdapter<Tag> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tags);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        // Sets item's tag as visible when popup is loaded
+        spinner.setSelection(adapter.getPosition(retrievedTag));
+
         // Behavior for when an item is clicked in the spinner
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -190,7 +199,6 @@ public class InventoryActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        spinner.setAdapter(adapter);
 
         // Set visible fields to the selected items relevant properties
         popup_item_name.setText(item.getTitle());
