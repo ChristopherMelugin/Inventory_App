@@ -34,7 +34,6 @@ import java.util.List;
 
 public class InventoryActivity extends AppCompatActivity {
 
-
     public static final String EXTRA_USERNAME = "com.cmelugin.inventory.loginvalue";
     public static final String CHANNEL_ID = "channel_low_stock";
     private RecyclerViewAdapter mAdapter;
@@ -53,6 +52,7 @@ public class InventoryActivity extends AppCompatActivity {
 
     public Menu menu;
     private long tagId;
+    private String filter = null;
 
 
     @Override
@@ -61,12 +61,12 @@ public class InventoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_inventory);
         Intent intent = getIntent();
         mUsername = intent.getStringExtra(EXTRA_USERNAME);
+        setupAdapter();
         Toolbar mToolbar = (Toolbar) findViewById(R.id.invToolbar);
         setActionBar(mToolbar);
         String title = mUsername + "'s Inventory";
         getActionBar().setTitle(title);
         onCreateOptionsMenu(menu);
-        setupAdapter();
     }
 
     @Override
@@ -81,13 +81,18 @@ public class InventoryActivity extends AppCompatActivity {
         mDb = Database.getInstance(getApplicationContext());
         recyclerView = findViewById(R.id.grid_recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 4));
-        mAdapter = new RecyclerViewAdapter(loadInventory(mUsername));
+        mAdapter = new RecyclerViewAdapter(loadInventory(mUsername, filter));
         recyclerView.setAdapter(mAdapter);
     }
 
-    // Loads inventory and sorts as necessary
-    private List<InventoryItem> loadInventory(String username) {
-        List<InventoryItem> items = mDb.getInventoryItems(username);
+    private List<InventoryItem> loadInventory(String username, String filter) {
+        List<InventoryItem> items;
+        if (filter == null) {
+            items = mDb.getInventoryItems(username);
+        }
+        else {
+            items = mDb.getFilteredInventoryItems(username, filter);
+        }
         if (sAbc == true) {
             Collections.sort(items, new compareTitles());
         }
@@ -115,10 +120,10 @@ public class InventoryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.new_tag:
+            case R.id.manage_tags:
                 Intent intent = new Intent(this, AddTagActivity.class);
                 intent.putExtra(InventoryActivity.EXTRA_USERNAME, mUsername);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
                 return true;
             case R.id.sortAbc:
                 sortAbc();
@@ -129,6 +134,19 @@ public class InventoryActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (!(data == null)) {
+            tagId = data.getLongExtra("tagId", tagId);
+            Tag tag = mDb.getTagForPopup(mUsername, String.valueOf(tagId));
+            filter = tag.getTag();
+        }
+        else {
+            filter = null;
+        }
+        onResume();
     }
 
     // Title sort button function
@@ -160,7 +178,6 @@ public class InventoryActivity extends AppCompatActivity {
             return item1.getQuantity() - (item0.getQuantity());
         }
     }
-
 
     public void onItemSelected(InventoryItem item) {
         mInventoryItem = item;

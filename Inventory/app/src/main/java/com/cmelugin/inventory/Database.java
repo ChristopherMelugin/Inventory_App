@@ -56,8 +56,8 @@ public class Database extends SQLiteOpenHelper {
 
     private static final class ItemTagMappingTable {
         private static final String TABLE = "map";
-        private static final String ITEM_REFERENCE = "item";
-        private static final String TAG_REFERENCE = "tag";
+        private static final String ITEM_REFERENCE = "item_id";
+        private static final String TAG_REFERENCE = "tag_id";
     }
 
     // Build tables
@@ -115,14 +115,11 @@ public class Database extends SQLiteOpenHelper {
     // Reads item data from database and inserts it into an array list
     public List<InventoryItem> getInventoryItems(String username) {
         List<InventoryItem> items = new ArrayList<>();
-
         SQLiteDatabase db = this.getReadableDatabase();
-
         String sql = "select * from "
                 + InventoryTable.TABLE + " where "
                 + InventoryTable.COL_USERNAME + " = ?";
         Cursor cursor = db.rawQuery(sql, new String[] { username });
-
         if(cursor.moveToFirst()) {
             do {
                 InventoryItem item = new InventoryItem();
@@ -131,6 +128,41 @@ public class Database extends SQLiteOpenHelper {
                 item.setQuantity(cursor.getInt(2));
                 item.setNotifyOnLow(cursor.getInt(3));
                 item.setUsername(cursor.getString(4));
+                items.add(item);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return items;
+    }
+
+    // Gets inventory items with a tag as a filter
+    public List<InventoryItem> getFilteredInventoryItems(String username, String filter) {
+        List<InventoryItem> items = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Example: SELECT * FROM map JOIN items ON item_id = items._id JOIN tags ON tag_id = tags._id WHERE items.username = 'a' AND tag = 'Sandwich';
+        String sql = "SELECT * FROM "
+                + ItemTagMappingTable.TABLE + " JOIN "
+                + InventoryTable.TABLE + " ON "
+                + ItemTagMappingTable.ITEM_REFERENCE + " = "
+                + InventoryTable.TABLE + "."
+                + InventoryTable.COL_ID + " JOIN "
+                + TagTable.TABLE + " ON "
+                + ItemTagMappingTable.TAG_REFERENCE + " = "
+                + TagTable.TABLE + "."
+                + TagTable.TAG_ID + " WHERE "
+                + InventoryTable.TABLE + "."
+                + InventoryTable.COL_USERNAME + " = ? AND "
+                + TagTable.TAG_NAME + " = ?";
+
+        Cursor cursor = db.rawQuery(sql, new String[] { username, filter });
+        if(cursor.moveToFirst()) {
+            do {
+                InventoryItem item = new InventoryItem();
+                item.setId(cursor.getInt(2));
+                item.setTitle(cursor.getString(3));
+                item.setQuantity(cursor.getInt(4));
+                item.setNotifyOnLow(cursor.getInt(5));
+                item.setUsername(cursor.getString(6));
                 items.add(item);
             } while (cursor.moveToNext());
         }
@@ -208,7 +240,8 @@ public class Database extends SQLiteOpenHelper {
     // Returns the tag id associated with the item selected for modification
     public int getMapTag(String itemId) {
         SQLiteDatabase db = getReadableDatabase();
-        String sql = "select tag from "
+        String sql = "select "
+                + ItemTagMappingTable.TAG_REFERENCE + " from "
                 + ItemTagMappingTable.TABLE + " where "
                 + ItemTagMappingTable.ITEM_REFERENCE + " = ?";
         Cursor cursor = db.rawQuery(sql, new String[] { itemId });
